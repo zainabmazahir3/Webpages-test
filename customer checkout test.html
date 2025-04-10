@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Checkout</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #e74c3c;
+            --info: #3498db;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 4px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .section:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.3rem;
+            font-weight: 400;
+        }
+        
+        .button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-1px);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .button.secondary {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        .button.secondary:hover {
+            background-color: #ddd;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: 4px;
+            border-left: 3px solid var(--info);
+            font-family: 'Courier New', monospace;
+            color: var(--dark);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border 0.3s ease;
+        }
+        
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .discount-notice {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            border-left: 3px solid var(--accent);
+            color: var(--dark);
+        }
+        
+        .discount-applied {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-left: 3px solid var(--success);
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+        
+        .discount-denied {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 3px solid var(--warning);
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .refresh-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .info-text {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Customer Checkout</h1>
+    
+    <!-- First Date/Time Section -->
+    <div class="section">
+        <h2>Current Date and Time</h2>
+        <button class="button" id="getDateBtn1">Display Date & Time</button>
+        <div class="result" id="dateResult1"></div>
+    </div>
+    
+    <!-- Second Date/Time Section -->
+    <div class="section">
+        <h2>Current Date and Time</h2>
+        <button class="button" id="getDateBtn2">Display Date & Time</button>
+        <div class="result" id="dateResult2"></div>
+    </div>
+    
+    <!-- Discount Calculator Section -->
+    <div class="section">
+        <div class="discount-notice">
+            <strong>Special Offer:</strong> Qualified customers receive 15% discount on purchases above £100.
+        </div>
+        
+        <div class="form-group">
+            <label for="customerId">Customer ID:</label>
+            <input type="text" id="customerId" placeholder="Enter customer ID">
+        </div>
+        
+        <div class="form-group">
+            <label for="totalPurchases">Total Purchases (£):</label>
+            <input type="number" id="totalPurchases" placeholder="Enter total amount" min="0" step="0.01">
+        </div>
+        
+        <button class="button" id="calculateBtn">Calculate Final Amount</button>
+        
+        <div class="result" id="paymentResult">
+            <div><strong>Customer Number:</strong> <span id="displayCustomerId">-</span></div>
+            <div><strong>Total Purchases:</strong> £<span id="displayTotalPurchases">0.00</span></div>
+            <div id="discountInfo"></div>
+        </div>
+    </div>
+
+    <div class="refresh-container">
+        <button class="button secondary" id="refreshBtn">Refresh Page</button>
+        <p class="info-text">Click to reset all form fields</p>
+    </div>
+
+    <script>
+        // Function to display date and time
+        function displayDateTime(elementId) {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short'
+            };
+            document.getElementById(elementId).textContent = now.toLocaleDateString('en-GB', options);
+        }
+        
+        // First date/time button
+        document.getElementById('getDateBtn1').addEventListener('click', function() {
+            displayDateTime('dateResult1');
+        });
+        
+        // Second date/time button
+        document.getElementById('getDateBtn2').addEventListener('click', function() {
+            displayDateTime('dateResult2');
+        });
+        
+        // Discount calculator functionality
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const customerId = document.getElementById('customerId').value.trim();
+            const totalPurchases = parseFloat(document.getElementById('totalPurchases').value);
+            const discountInfo = document.getElementById('discountInfo');
+            
+            // Clear previous discount info
+            discountInfo.innerHTML = '';
+            discountInfo.className = '';
+            
+            // Basic validation
+            if (!customerId || isNaN(totalPurchases)) {
+                alert('Please enter valid customer ID and purchase amount');
+                return;
+            }
+            
+            // Display basic info
+            document.getElementById('displayCustomerId').textContent = customerId;
+            document.getElementById('displayTotalPurchases').textContent = totalPurchases.toFixed(2);
+            
+            // Check for discount eligibility (only for #12345)
+            if (customerId === "12345") {
+                if (totalPurchases > 100) {
+                    const discount = totalPurchases * 0.15;
+                    const finalAmount = totalPurchases - discount;
+                    
+                    discountInfo.className = 'discount-applied';
+                    discountInfo.innerHTML = `
+                        <div><strong>Discount Applied:</strong> 15% (£${discount.toFixed(2)})</div>
+                        <div><strong>Final Amount Due:</strong> £${finalAmount.toFixed(2)}</div>
+                    `;
+                } else {
+                    discountInfo.innerHTML = `<div>Minimum purchase of £100 required for discount eligibility.</div>`;
+                }
+            } else {
+                discountInfo.className = 'discount-denied';
+                discountInfo.innerHTML = `<div>Discount not available for this customer ID.</div>`;
+            }
+        });
+        
+        // Refresh button functionality
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            location.reload();
+        });
+    </script>
+</body>
+</html>
