@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mickey Mouse Restaurant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #fff0f5;
+            color: #333;
+        }
+        
+        /* Main Content */
+        .main-content {
+            text-align: center;
+            padding: 30px 20px 10px;
+        }
+        
+        .main-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #ff6b6b;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        /* Slideshow Section */
+        .slideshow-container {
+            width: 90%;
+            max-width: 800px;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .mySlides {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .mySlides img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Fading animation */
+        .fade {
+            animation-name: fade;
+            animation-duration: 3s;
+        }
+        
+        @keyframes fade {
+            from {opacity: .4} 
+            to {opacity: 1}
+        }
+        
+        /* Media Section */
+        .media-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px;
+            margin: 30px auto;
+            max-width: 1000px;
+            flex-wrap: wrap;
+        }
+        
+        .media-box {
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .media-box h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .video-container {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 250px;
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .image-container {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 250px;
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Order Form */
+        .order-form {
+            background-color: white;
+            padding: 30px;
+            max-width: 600px;
+            margin: 30px auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        
+        .order-form h2 {
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+            font-size: 1rem;
+        }
+        
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        .options-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .option-box {
+            flex: 1;
+            min-width: 100px;
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option-box:hover {
+            background-color: #e9ecef;
+        }
+        
+        .option-box input {
+            margin-right: 6px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 30px auto 0;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #ff5252;
+        }
+        
+        /* Order Summary */
+        .order-summary {
+            display: none;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #eee;
+        }
+        
+        .order-summary h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .order-summary p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .price {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Mickey Mouse Restaurant</h1>
+        <p class="tagline">Get The Delicious Roasted Chicken Right At Your Door</p>
+    </div>
+    
+    <!-- Slideshow Section -->
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <img src="chickenRoast.jpg" alt="Delicious Roasted Chicken">
+        </div>
+        
+        <div class="mySlides fade">
+            <img src="chickenPlate.jpg" alt="Special Dish">
+        </div>
+    </div>
+    
+    <!-- Media Section -->
+    <div class="media-section">
+        <div class="media-box">
+            <h2>Mickey Mouse Special</h2>
+            <div class="video-container">
+                <!-- Replace with your Mickey Mouse video -->
+                <video autoplay muted loop>
+                    <source src="mickeyMouse.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+        
+        <div class="media-box">
+            <h2>Money Quest</h2>
+            <div class="image-container">
+                <!-- Replace with your Money Quest image -->
+                <img src="Money_Quest.jpg" alt="Money Quest">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Form -->
+    <div class="order-form">
+        <h2>Place Your Order</h2>
+        <form id="orderForm">
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your name">
+            </div>
+            
+            <!-- Taste Options -->
+            <div class="form-group">
+                <label>Choose Your Taste:</label>
+                <div class="options-container">
+                    <div class="option-box">
+                        <input type="radio" id="mild" name="taste" value="Mild" checked>
+                        <label for="mild">Mild</label>
+                    </div>
+                    <div class="option-box">
+                        <input type="radio" id="medium" name="taste" value="Medium">
+                        <label for="medium">Medium</label>
+                    </div>
+                    <div class="option-box">
+                        <input type="radio" id="spicy" name="taste" value="Spicy">
+                        <label for="spicy">Spicy</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Size Options -->
+            <div class="form-group">
+                <label>Choose Size:</label>
+                <div class="options-container">
+                    <div class="option-box">
+                        <input type="radio" id="whole" name="size" value="Whole" checked>
+                        <label for="whole">Whole</label>
+                    </div>
+                    <div class="option-box">
+                        <input type="radio" id="half" name="size" value="Half">
+                        <label for="half">Half</label>
+                    </div>
+                    <div class="option-box">
+                        <input type="radio" id="quarter" name="size" value="Quarter">
+                        <label for="quarter">Quarter</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delivery Options -->
+            <div class="form-group">
+                <label for="delivery">Choose Mode of Delivery:</label>
+                <select id="delivery" name="delivery" required>
+                    <option value="">-- Select Delivery --</option>
+                    <option value="Same Day Delivery">Same Day Delivery</option>
+                    <option value="Scheduled Delivery">Scheduled Delivery</option>
+                </select>
+            </div>
+            
+            <button type="button" onclick="showOrderSummary()">Order Now!</button>
+            
+            <!-- Order Summary -->
+            <div class="order-summary" id="orderSummary">
+                <h3>Your Order Summary</h3>
+                <p><strong>Name:</strong> <span id="summaryName"></span></p>
+                <p><strong>Item:</strong> Roasted Chicken (<span id="summarySize"></span>)</p>
+                <p><strong>Taste:</strong> <span id="summaryTaste"></span></p>
+                <p><strong>Delivery:</strong> <span id="summaryDelivery"></span></p>
+                <p><strong>Total Price:</strong> <span class="price" id="summaryPrice"></span></p>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // Slideshow JavaScript
+        let slideIndex = 0;
+        showSlides();
+        
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}    
+            slides[slideIndex-1].style.display = "block";  
+            setTimeout(showSlides, 3000); // Change image every 3 seconds
+        }
+        
+        // Order Summary JavaScript
+        function showOrderSummary() {
+            // Get form values
+            const name = document.getElementById('name').value;
+            const taste = document.querySelector('input[name="taste"]:checked').value;
+            const size = document.querySelector('input[name="size"]:checked').value;
+            const delivery = document.getElementById('delivery').value;
+            
+            // Calculate price
+            let price;
+            switch(size) {
+                case 'Whole': price = '£13.49'; break;
+                case 'Half': price = '£9.99'; break;
+                case 'Quarter': price = '£6.49'; break;
+                default: price = '£0.00';
+            }
+            
+            // Validate form
+            if (!name || !delivery) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Display summary
+            document.getElementById('summaryName').textContent = name;
+            document.getElementById('summarySize').textContent = size;
+            document.getElementById('summaryTaste').textContent = taste;
+            document.getElementById('summaryDelivery').textContent = delivery;
+            document.getElementById('summaryPrice').textContent = price;
+            
+            // Show summary
+            document.getElementById('orderSummary').style.display = 'block';
+            
+            // Scroll to summary
+            document.getElementById('orderSummary').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
